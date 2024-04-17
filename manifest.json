@@ -1,9 +1,9 @@
 {
     "version": "1.0.0",
     "manifest_version": 3,
-    "name": "React Chrome Extension",
-    "description": "This is a Chrome extension built with React and TypeScript",
-    "permissions": ["activeTab", "scripting"],
+    "name": "Readefine",
+    "description": "YESSSSSSSSSSSSSS",
+    "permissions": ["activeTab", "scripting", "webNavigation"],
 
     "action": {
         "default_popup": "js/index.html",
@@ -13,7 +13,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["js/contentScript.js"]
+            "js": ["js/contentScript.js", "js/background.js"]
 
         }
     ]
