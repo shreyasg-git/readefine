@@ -10,11 +10,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       activeTab = tabs[0];
       sendResponse(activeTab);
       console.log("TOOOOOOOOOO TAB ID", activeTab.id);
-      window.alert(
-        `this tab is at position ${
-          activeTab!.index
-        }, Readefine will move it to position 1 (after pinned tabs)`
-      );
+      // window.alert(
+      //   `this tab is at position ${
+      //     activeTab!.index
+      //   }, Readefine will move it to position 1 (after pinned tabs)`
+      // );
       chrome.tabs.move(activeTab!.id, { index: 0 }, (movedTab) => {
         console.log("DONEEE");
       });

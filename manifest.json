@@ -7,13 +7,13 @@
 
     "action": {
         "default_popup": "js/index.html",
-        "default_title": "React Chrome Extension"
+        "default_title": "ReaDefine"
     },
 
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["js/contentScript.js", "js/background.js"]
+            "js": ["js/foreground.js"]
 
         }
     ], 

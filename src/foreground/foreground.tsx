@@ -4,16 +4,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Resizable } from "react-resizable";
 
-// Define a container element in which to render the React app
-
-// Render the React app into the container
-
 type AppProps = { rootPageUrl: string };
 
 const App: React.FC<AppProps> = ({ rootPageUrl }) => {
   return (
     <>
-      {/* hllooooooooo */}
       <iframe
         src={rootPageUrl}
         title="root_page"
