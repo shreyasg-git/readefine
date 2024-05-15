@@ -2,7 +2,7 @@ Just do yarn watch - Webpack will recompile by itself, you just haev to refresh 
 
 three parts here -
 index.tsx - extension ka popup
-content-script - anything inside page, in foreground
+(called foregorund now) content-script - anything inside page, in foreground
 background - background script, service worker, always running
 
 alerts - content-script foreground
