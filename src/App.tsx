@@ -82,7 +82,7 @@ const Popup = () => {
 function App() {
   return (
     <div className="App">
-      <div className="App">Hello World</div>
+      {/* <div className="App">Hello World</div> */}
       <Popup />
     </div>
   );

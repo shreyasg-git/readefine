@@ -1,3 +1,4 @@
+import { log } from "console";
 import React from "react";
 
 import ReactDOM from "react-dom";
@@ -12,10 +13,11 @@ type AppProps = { rootPageUrl: string };
 const App: React.FC<AppProps> = ({ rootPageUrl }) => {
   return (
     <>
+      {/* hllooooooooo */}
       <iframe
         src={rootPageUrl}
         title="root_page"
-        style={{ width: "80%", zIndex: 1000 }}
+        style={{ width: "80%", height: "1000px", zIndex: 1000 }}
       />
     </>
   );
@@ -48,3 +50,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     createIframe(message.src);
   }
 });
+
+//
+console.log("HIIIIIIIIIIIIIIIIIIIIii");
+
+const res = document.addEventListener("DOMContentLoaded", function () {
+  console.log("AAAAAAAAAAAAAAAAAAAa");
+
+  createIframe("https://en.wikipedia.org/wiki/Vinayak_Damodar_Savarkar");
+});
+
+window.onload = (passed) => {
+  chrome.runtime.sendMessage({ action: "getActiveTab" }, function (response) {
+    console.log("Response from background script:", response);
+  });
+
+  // const tab = chrome.tabs.query(
+  //   { active: true, currentWindow: true },
+  //   (tabs) => {
+  //     const activeTab = tabs[0];
+  //     console.log("active tab", activeTab);
+  //   }
+  // );
+  console.log("passed", passed);
+  // console.log("TAB", tab);
+  // createIframe("https://en.wikipedia.org/wiki/Vinayak_Damodar_Savarkar");
+};
+
+console.log("LOLL", res);
