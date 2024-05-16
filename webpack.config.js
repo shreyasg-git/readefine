@@ -1,6 +1,13 @@
 const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const Reloader = require("advanced-extension-reloader-watch-2/umd/reloader");
+
+const reloader = new Reloader({
+  port: 6223,
+});
+
+reloader.watch();
 
 module.exports = {
   entry: {
@@ -35,6 +42,22 @@ module.exports = {
       patterns: [{ from: "manifest.json", to: "../manifest.json" }],
     }),
     ...getHtmlPlugins(["index"]),
+    {
+      apply: (compiler) => {
+        compiler.hooks.done.tap("done", (stats) => {
+          const an_error_occured = stats.compilation.errors.length !== 0;
+
+          if (an_error_occured) {
+            reloader.play_error_notification();
+          } else {
+            reloader.reload({
+              ext_id: "dphafhlelejgffkmbmnmomfehnekdnlj",
+              play_sound: true,
+            });
+          }
+        });
+      },
+    },
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".js"],

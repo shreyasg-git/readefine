@@ -6,7 +6,22 @@ import { log } from "console";
 
 type AppProps = { rootPageUrl: string };
 
+const swapFavicon = () => {
+  let link: HTMLLinkElement | null =
+    document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "icon";
+    document.head.appendChild(link);
+  }
+
+  link.href = "%PUBLIC_URL%/favicon.ico";
+  console.log("LINK HREF", link.href);
+};
+
 const initializeReaDefine = (root_url: string) => {
+  console.log("INITIALIZE CALLED AAAAAAAa hii no yes dude haha no");
+
   createIframe(root_url);
 
   chrome.runtime.sendMessage({ action: "getActiveTabId" }, function (response) {
@@ -20,6 +35,11 @@ const initializeReaDefine = (root_url: string) => {
       action: Actions.SAVE_TO_LOCAL_STORAGE,
       data: { root_tab_id: activeTabId },
     });
+    document.title = "Readefine";
+    console.log("SWAPPING FAVICONs", document);
+    console.log();
+
+    swapFavicon();
   });
 };
 
@@ -55,11 +75,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     initializeReaDefine(message.src);
   }
 });
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "pageLoaded") {
-    createIframe(message.src);
-  }
-});
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   if (message.action === "pageLoaded") {
+//     createIframe(message.src);
+//   }
+// });
 
 window.onload = async (passed) => {
   console.log("passed", passed);
