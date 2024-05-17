@@ -7,24 +7,22 @@ import { log } from "console";
 type AppProps = { rootPageUrl: string };
 
 const smartWidth = (iframe: HTMLIFrameElement) => {
-  const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-  const body = iframeDoc?.body;
-  const html = iframeDoc?.documentElement;
-
+  // const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+  // const body = iframeDoc?.body;
+  // const html = iframeDoc?.documentElement;
   // @ts-ignore
-  const hasHoriScrollBar = body?.scrollWidth > html?.clientWidth;
-  console.log(
-    "BODY SCROLL : ",
-    body?.scrollWidth,
-    ", CLIENT WIDTH : ",
-    html?.clientWidth
-  );
-
-  if (hasHoriScrollBar) {
-    console.log("Horizontal scrollbar is visible", iframe);
-  } else {
-    console.log("Horizontal scrollbar is not visible", iframe);
-  }
+  // const hasHoriScrollBar = body?.scrollWidth > html?.clientWidth;
+  // console.log(
+  //   "BODY SCROLL : ",
+  //   body?.scrollWidth,
+  //   ", CLIENT WIDTH : ",
+  //   html?.clientWidth
+  // );
+  // if (hasHoriScrollBar) {
+  //   console.log("Horizontal scrollbar is visible", iframe);
+  // } else {
+  //   console.log("Horizontal scrollbar is not visible", iframe);
+  // }
 };
 
 const appendIFrame = (link: string) => {
@@ -43,13 +41,13 @@ const appendIFrame = (link: string) => {
   window.addEventListener(
     "wheel",
     (event: any) => {
-      console.log("YOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+      // console.log("YOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
       if (event.shiftKey) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
-        console.log("YOOOOOOOOOOOO");
+        // console.log("YOOOOOOOOOOOO");
 
         const iframeArr = document.getElementById("iframe-array");
         if (iframeArr) {
@@ -176,16 +174,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // });
 
 window.onload = async (passed) => {
-  console.log("passed", passed);
-  console.log(window.location.href);
+  // console.log("passed", passed);
+  // console.log(window.location.href);
   // initializeReaDefine(window.location.href);
 
   chrome.runtime.sendMessage({ action: "getActiveTabId" }, function (response) {
-    console.log("Response from background script:", response);
+    // console.log("Response from background script:", response);
     const activeTabId = response;
 
     chrome.storage.local.get("readefine", function (localState) {
-      console.log("State GOT", localState.readefine.root_tab_id, activeTabId);
+      // console.log("State GOT", localState.readefine.root_tab_id, activeTabId);
       if (localState.readefine.root_tab_id === activeTabId) {
         initializeReaDefine(window.location.href);
       }
@@ -194,7 +192,7 @@ window.onload = async (passed) => {
 };
 
 window.onkeydown = (event) => {
-  console.log(event.key);
+  // console.log(event.key);
 
   if (event.key === "Z" && event.ctrlKey && event.shiftKey) {
     initializeReaDefine(window.location.href);

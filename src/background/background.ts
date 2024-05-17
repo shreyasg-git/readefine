@@ -1,6 +1,4 @@
 // background.js
-
-import { log } from "console";
 import { Actions } from "../conts/actions";
 
 // Listen for messages from content script
@@ -14,16 +12,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       return true;
 
     case Actions.MOVE_TAB_TO_START:
-      console.log("RECIEVED TABID", request.data.tabId);
+      // console.log("RECIEVED TABID", request.data.tabId);
 
       chrome.tabs.move(request.data.tabId, { index: 0 }, (movedTab) => {
-        console.log("DONEEE");
+        // console.log("DONEEE");
       });
       return true;
     case Actions.SAVE_TO_LOCAL_STORAGE:
-      console.log("SAVING TO LOCAL STORAGE", request.data);
+      // console.log("SAVING TO LOCAL STORAGE", request.data);
       chrome.storage.local.set({ readefine: request.data }, function () {
-        console.log("State saved");
+        // console.log("State saved");
       });
       return true;
     case Actions.GET_FROM_LOCAL_STORAGE:
