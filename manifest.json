@@ -3,7 +3,7 @@
     "manifest_version": 3,
     "name": "Readefine",
     "description": "YESSSSSSSSSSSSSS",
-    "permissions": ["activeTab", "scripting", "webNavigation"],
+    "permissions": ["activeTab", "scripting", "webNavigation", "storage"],
 
     "action": {
         "default_popup": "js/index.html",
