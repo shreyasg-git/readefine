@@ -4,7 +4,51 @@ import ReactDOM from "react-dom";
 import { Actions } from "../conts/actions";
 import { log } from "console";
 
+const LINKS: string[] = [];
+const LINKS2: string[] = [
+  "https://en.wikipedia.org/wiki/Randeep_Hooda",
+  "https://en.wikipedia.org/wiki/Jats",
+  "https://en.wikipedia.org/wiki/Rajputana",
+  "https://en.wikipedia.org/wiki/Medieval_India",
+  "https://en.wikipedia.org/wiki/Post-classical_history",
+];
+
+let IFRAME_OVERLAY_COUNTER = 10;
+
+const getIframeZindex = () => {
+  const old = IFRAME_OVERLAY_COUNTER;
+  IFRAME_OVERLAY_COUNTER += 1;
+  return `${old}`;
+};
+
 type AppProps = { rootPageUrl: string };
+
+const initializeFromArray = () => {
+  console.log("Initializing Readefine FROM HARDCODED LINKS...");
+
+  chrome.runtime.sendMessage({ action: "getActiveTabId" }, function (response) {
+    // console.log("Response from background script:", response);
+    const activeTabId = response;
+    chrome.runtime.sendMessage({
+      action: Actions.MOVE_TAB_TO_START,
+      data: { tabId: activeTabId },
+    });
+    chrome.runtime.sendMessage({
+      action: Actions.SAVE_TO_LOCAL_STORAGE,
+      data: { root_tab_id: activeTabId },
+    });
+    document.title = "Readefine";
+    // INITIALIZE READEFINE HERE ----------------------------------------------------------------
+
+    swapFavicon();
+    initializeRoot(LINKS2[0]);
+    overrideLinkClicks();
+
+    for (let i = 1; i < LINKS2.length; i++) {
+      appendIFrame(LINKS2[i]);
+    }
+  });
+};
 
 const smartWidth = (iframe: HTMLIFrameElement) => {
   // const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
@@ -30,11 +74,16 @@ const appendIFrame = (link: string) => {
   const iframe = document.createElement("iframe");
   iframe.src = link;
   // iframe.style.width = "80%";
+  LINKS.push(link);
+  console.log("YOOOOOOO LINKS !!!", LINKS);
+
   iframe.style.width = "100%";
   iframe.style.minWidth = "500px";
+  iframe.style.maxWidth = "625px";
   iframe.style.height = "98vh";
   iframe.style.zIndex = "1000";
   iframe.style.overflowX = "hidden";
+  iframe.style.zIndex = getIframeZindex();
   iframeArr?.appendChild(iframe);
   smartWidth(iframe);
 
@@ -155,7 +204,16 @@ const App: React.FC<AppProps> = ({ rootPageUrl }) => {
       <iframe
         src={rootPageUrl}
         title="root_page"
-        style={{ width: "80%", height: "98vh", zIndex: 1000 }}
+        style={{
+          width: "625px",
+          maxWidth: "625px",
+          height: "98vh",
+          zIndex: 10,
+          position: "sticky",
+          left: 0,
+          flexGrow: 1,
+          flexShrink: 0,
+        }}
       />
     </div>
   );
@@ -196,5 +254,7 @@ window.onkeydown = (event) => {
 
   if (event.key === "Z" && event.ctrlKey && event.shiftKey) {
     initializeReaDefine(window.location.href);
+  } else if (event.key === "X" && event.ctrlKey && event.shiftKey) {
+    initializeFromArray();
   }
 };
