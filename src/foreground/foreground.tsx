@@ -1,8 +1,7 @@
 import React from "react";
-
 import ReactDOM from "react-dom";
 import { Actions } from "../conts/actions";
-import { log } from "console";
+import "./index.css";
 
 const LINKS: string[] = [];
 const LINKS2: string[] = [
@@ -11,15 +10,29 @@ const LINKS2: string[] = [
   "https://en.wikipedia.org/wiki/Rajputana",
   "https://en.wikipedia.org/wiki/Medieval_India",
   "https://en.wikipedia.org/wiki/Post-classical_history",
+  "https://en.wikipedia.org/wiki/Randeep_Hooda",
+  "https://en.wikipedia.org/wiki/Jats",
+  "https://en.wikipedia.org/wiki/Rajputana",
+  "https://en.wikipedia.org/wiki/Medieval_India",
+  "https://en.wikipedia.org/wiki/Randeep_Hooda",
+  "https://en.wikipedia.org/wiki/Jats",
+  "https://en.wikipedia.org/wiki/Rajputana",
+  "https://en.wikipedia.org/wiki/Medieval_India",
+  "https://en.wikipedia.org/wiki/Post-classical_history",
+  "https://en.wikipedia.org/wiki/Randeep_Hooda",
+  "https://en.wikipedia.org/wiki/Jats",
+  "https://en.wikipedia.org/wiki/Rajputana",
+  "https://en.wikipedia.org/wiki/Medieval_India",
+  "https://en.wikipedia.org/wiki/Randeep_Hooda",
+  "https://en.wikipedia.org/wiki/Jats",
+  "https://en.wikipedia.org/wiki/Rajputana",
+  "https://en.wikipedia.org/wiki/Medieval_India",
+  "https://en.wikipedia.org/wiki/Post-classical_history",
+  "https://en.wikipedia.org/wiki/Randeep_Hooda",
+  "https://en.wikipedia.org/wiki/Jats",
+  "https://en.wikipedia.org/wiki/Rajputana",
+  "https://en.wikipedia.org/wiki/Medieval_India",
 ];
-
-let IFRAME_OVERLAY_COUNTER = 10;
-
-const getIframeZindex = () => {
-  const old = IFRAME_OVERLAY_COUNTER;
-  IFRAME_OVERLAY_COUNTER += 1;
-  return `${old}`;
-};
 
 type AppProps = { rootPageUrl: string };
 
@@ -38,7 +51,6 @@ const initializeFromArray = () => {
       data: { root_tab_id: activeTabId },
     });
     document.title = "Readefine";
-    // INITIALIZE READEFINE HERE ----------------------------------------------------------------
 
     swapFavicon();
     initializeRoot(LINKS2[0]);
@@ -77,15 +89,15 @@ const appendIFrame = (link: string) => {
   LINKS.push(link);
   console.log("YOOOOOOO LINKS !!!", LINKS);
 
-  iframe.style.width = "100%";
-  iframe.style.minWidth = "500px";
-  iframe.style.maxWidth = "625px";
-  iframe.style.height = "98vh";
-  iframe.style.zIndex = "1000";
-  iframe.style.overflowX = "hidden";
-  iframe.style.zIndex = getIframeZindex();
+  iframe.style.position = "sticky";
+  iframe.style.left = "0";
+  iframe.style.zIndex = "10";
+  // ====================================================
+  iframe.style.borderWidth = "0px";
+  iframe.style.boxShadow = "0px 0px 15px 3px rgba(0,0,0,0.1)";
+
   iframeArr?.appendChild(iframe);
-  smartWidth(iframe);
+  // smartWidth(iframe);
 
   window.addEventListener(
     "wheel",
@@ -146,8 +158,7 @@ const swapFavicon = () => {
     link.rel = "icon";
     document.head.appendChild(link);
   }
-
-  link.href = "%PUBLIC_URL%/favicon.ico";
+  // link.href = chrome.runtime.getURL("assets/loader.svg");
   // console.log("LINK HREF", link.href);
 };
 
@@ -191,6 +202,8 @@ function initializeRoot(src: string) {
   bodyAttributes.forEach((attr) => {
     document.body.removeAttribute(attr);
   });
+  // NOTE: this must be done here only, since we are removing all attrs in the block above
+  document.body.style.overflow = "hidden";
   document.body.appendChild(appContainer);
   ReactDOM.render(<App rootPageUrl={src} />, appContainer);
 }
@@ -199,20 +212,28 @@ const App: React.FC<AppProps> = ({ rootPageUrl }) => {
   return (
     <div
       id="iframe-array"
-      style={{ display: "flex", flexDirection: "row", overflow: "scroll" }}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        position: "relative",
+        width: "100vw",
+        overflowY: "auto" /* Ensure scrolling */,
+        overflowX: "auto" /* Ensure scrolling */,
+        height: "100vh",
+
+        borderWidth: "2px",
+        borderColor: "red",
+        borderStyle: "solid",
+      }}
     >
       <iframe
         src={rootPageUrl}
         title="root_page"
         style={{
-          width: "625px",
-          maxWidth: "625px",
-          height: "98vh",
-          zIndex: 10,
+          // position: "-webkit-sticky",
           position: "sticky",
           left: 0,
-          flexGrow: 1,
-          flexShrink: 0,
+          zIndex: 10,
         }}
       />
     </div>
