@@ -84,6 +84,17 @@ const smartWidth = (iframe: HTMLIFrameElement) => {
 const appendIFrame = (link: string) => {
   const iframeArr = document.getElementById("iframe-array");
   const iframe = document.createElement("iframe");
+
+  const styleString =
+    "::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { border-radius: 4px; left: -30; top: -30; background: #888; } ::-webkit-scrollbar-thumb:hover { background: #555; }";
+
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+  const style = iframeDoc?.createElement("style");
+  if (style) {
+    style.textContent = styleString;
+    iframeDoc?.head.appendChild(style);
+  }
+
   iframe.src = link;
   // iframe.style.width = "80%";
   LINKS.push(link);
@@ -92,9 +103,11 @@ const appendIFrame = (link: string) => {
   iframe.style.position = "sticky";
   iframe.style.left = "0";
   iframe.style.zIndex = "10";
+  iframe.style.minWidth = "625px";
   // ====================================================
   iframe.style.borderWidth = "0px";
   iframe.style.boxShadow = "0px 0px 15px 3px rgba(0,0,0,0.1)";
+  iframe.style.overflowX = "hidden";
 
   iframeArr?.appendChild(iframe);
   // smartWidth(iframe);
@@ -210,32 +223,47 @@ function initializeRoot(src: string) {
 
 const App: React.FC<AppProps> = ({ rootPageUrl }) => {
   return (
-    <div
-      id="iframe-array"
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        position: "relative",
-        width: "100vw",
-        overflowY: "auto" /* Ensure scrolling */,
-        overflowX: "auto" /* Ensure scrolling */,
-        height: "100vh",
-
-        borderWidth: "2px",
-        borderColor: "red",
-        borderStyle: "solid",
-      }}
-    >
+    <div style={{ display: "flex", flexDirection: "row" }}>
       <iframe
         src={rootPageUrl}
         title="root_page"
         style={{
           // position: "-webkit-sticky",
-          position: "sticky",
-          left: 0,
+          // position: "sticky",
+          // left: 0,
           zIndex: 10,
+          minWidth: "625px",
         }}
       />
+      <div
+        id="iframe-array"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          position: "relative",
+          width: "98vw",
+          // overflowY: "auto" /* Ensure scrolling */,
+          // overflowX: "auto" /* Ensure scrolling */,
+          overflow: "overlay",
+          height: "99vh",
+
+          // borderWidth: "2px",f
+          // borderColor: "red",
+          // borderStyle: "solid",
+        }}
+      >
+        <iframe
+          src={rootPageUrl}
+          title="root_page"
+          style={{
+            // position: "-webkit-sticky",
+            position: "sticky",
+            left: 0,
+            zIndex: 10,
+            minWidth: "625px",
+          }}
+        />
+      </div>
     </div>
   );
 };
