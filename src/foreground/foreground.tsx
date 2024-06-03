@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Actions } from "../conts/actions";
 import "./index.css";
+import { log } from "console";
 
 const LINKS: string[] = [];
 const LINKS2: string[] = [
@@ -12,26 +13,8 @@ const LINKS2: string[] = [
   "https://en.wikipedia.org/wiki/Post-classical_history",
   "https://en.wikipedia.org/wiki/Randeep_Hooda",
   "https://en.wikipedia.org/wiki/Jats",
-  "https://en.wikipedia.org/wiki/Rajputana",
-  "https://en.wikipedia.org/wiki/Medieval_India",
-  "https://en.wikipedia.org/wiki/Randeep_Hooda",
   "https://en.wikipedia.org/wiki/Jats",
-  "https://en.wikipedia.org/wiki/Rajputana",
-  "https://en.wikipedia.org/wiki/Medieval_India",
-  "https://en.wikipedia.org/wiki/Post-classical_history",
-  "https://en.wikipedia.org/wiki/Randeep_Hooda",
   "https://en.wikipedia.org/wiki/Jats",
-  "https://en.wikipedia.org/wiki/Rajputana",
-  "https://en.wikipedia.org/wiki/Medieval_India",
-  "https://en.wikipedia.org/wiki/Randeep_Hooda",
-  "https://en.wikipedia.org/wiki/Jats",
-  "https://en.wikipedia.org/wiki/Rajputana",
-  "https://en.wikipedia.org/wiki/Medieval_India",
-  "https://en.wikipedia.org/wiki/Post-classical_history",
-  "https://en.wikipedia.org/wiki/Randeep_Hooda",
-  "https://en.wikipedia.org/wiki/Jats",
-  "https://en.wikipedia.org/wiki/Rajputana",
-  "https://en.wikipedia.org/wiki/Medieval_India",
 ];
 
 type AppProps = { rootPageUrl: string };
@@ -96,6 +79,8 @@ const appendIFrame = (link: string) => {
   }
 
   iframe.src = link;
+  iframe.setAttribute("tabIndex", "-1");
+  iframe.style.pointerEvents = "none";
   // iframe.style.width = "80%";
   LINKS.push(link);
   console.log("YOOOOOOO LINKS !!!", LINKS);
@@ -202,6 +187,28 @@ const initializeReaDefine = (root_url: string) => {
     swapFavicon();
     initializeRoot(root_url);
     overrideLinkClicks();
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Control") {
+        const SIDEBAR = document.getElementById("readefine-sidebar");
+        if (SIDEBAR) {
+          SIDEBAR.style.display = "flex";
+        } else {
+          console.log("SIDEBAR NOT FOUND");
+        }
+      }
+      console.log("CTRL KEY PRESSED");
+    });
+    window.addEventListener("keyup", (event) => {
+      if (event.key === "Control") {
+        const SIDEBAR = document.getElementById("readefine-sidebar");
+        if (SIDEBAR) {
+          SIDEBAR.style.display = "none";
+        } else {
+          console.log("SIDEBAR NOT FOUND");
+        }
+      }
+      console.log("CTRL KEY PRESSED");
+    });
   });
 };
 
@@ -217,6 +224,9 @@ function initializeRoot(src: string) {
   });
   // NOTE: this must be done here only, since we are removing all attrs in the block above
   document.body.style.overflow = "hidden";
+  document.body.setAttribute("tabIndex", "-1");
+  console.log(document);
+
   document.body.appendChild(appContainer);
   ReactDOM.render(<App rootPageUrl={src} />, appContainer);
 }
@@ -224,24 +234,37 @@ function initializeRoot(src: string) {
 const App: React.FC<AppProps> = ({ rootPageUrl }) => {
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
-      <iframe
-        src={rootPageUrl}
-        title="root_page"
+      <div
+        id="readefine-sidebar"
         style={{
-          // position: "-webkit-sticky",
-          // position: "sticky",
-          // left: 0,
-          zIndex: 10,
-          minWidth: "625px",
+          width: "400px",
+          borderWidth: "1",
+          borderColor: "#fff",
+          borderStyle: "solid",
+          backgroundColor: "rgba(0,0,0,0.8)",
+          display: "none",
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: 99999,
         }}
-      />
+      >
+        <h3>TREEE</h3>
+        <h3>TREEE</h3>
+        <h3>TREEE</h3>
+        <h3>TREEE</h3>
+        <h3>TREEE</h3>
+        <h3>TREEE</h3>
+        <h3>TREEE</h3>
+      </div>
       <div
         id="iframe-array"
         style={{
           display: "flex",
           flexDirection: "row",
           position: "relative",
-          width: "98vw",
+          width: "95vw",
           // overflowY: "auto" /* Ensure scrolling */,
           // overflowX: "auto" /* Ensure scrolling */,
           overflow: "overlay",
@@ -253,9 +276,12 @@ const App: React.FC<AppProps> = ({ rootPageUrl }) => {
         }}
       >
         <iframe
+          tabIndex={-1}
           src={rootPageUrl}
           title="root_page"
           style={{
+            pointerEvents: "none",
+
             // position: "-webkit-sticky",
             position: "sticky",
             left: 0,
@@ -299,7 +325,7 @@ window.onload = async (passed) => {
 };
 
 window.onkeydown = (event) => {
-  // console.log(event.key);
+  console.log(event.key);
 
   if (event.key === "Z" && event.ctrlKey && event.shiftKey) {
     initializeReaDefine(window.location.href);
